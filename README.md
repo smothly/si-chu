@@ -1,7 +1,7 @@
-# SiChu 시추
+# SiChu 시츄
 ### 에브리타임 리뷰 기반 시간표 추천서비스입니다.
 
-url: sichu.mooo.com
+### [시츄 홈페이지](sichu.mooo.com)
 
 ---
 
