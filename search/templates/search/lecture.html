@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head_title %}
+    SiChu - 강의 정보
+{% endblock %}
+
+{% block content %}
+    {% load mathfilters %}
+
+    <div class='container'>
+        <div class="title has-background-light" style="padding: 2% 3%;">강의 정보</div>
+        <div class="columns is-multiline detail_wrapper">
+            <div class="column is-one-mobile is-half-desktop is-12-touch">
+                <article class=" notification detail is-white ">
+                    <!-- 아이콘 강의 교수 학부 시간 개설학기 -->
+                    <h1 class="title is-size-4">
+                        <span class="icon has-text-info">
+                            {% autoescape off %}{{ lecture.icon.tag }}{% endautoescape %}
+                        </span>   {{  lecture.name }}<br>
+                    </h1>
+                    <div class='is-size-6'>
+                        <p>
+                            <a href="/prof/{{ lecture.prof.id }}" style="color:royalblue; font-weight: bold;"> <span
+                                    class='title is-size-6 '>교수: </span>{{ lecture.prof_name }}</a><br>
+                        </p><br>
+                        <p>
+                            <span class='title is-size-6'>학부: </span> {{ lecture.get_category }}<br>
+                        </p><br>
+                        <p>
+                            <span class='title is-size-6'>개설학기: </span> {{ lecture.get_semester }}<br>
+                        </p><br>
+                        <p>
+                            <span class='title is-size-6'>시간 & 장소: </span> {{ lecture.get_time }}<br>
+                        </p><br>
+                        <p>
+                            <span class='title is-size-6'>평점</span>
+                            {% for star in lecture.get_star.full_star %}
+                                <div class="star" style="max-width: {{ 25 }}px;">
+                                    <i class="fas fa-lg fa-star has-text-warning"></i>
+                                </div>
+                            {% endfor %}
+                        <div class="star" style="max-width: {{ 25|mul:lecture.get_star.half_star }}px;"><i
+                                class="fas fa-lg fa-star has-text-warning"></i>
+                        </div>
+                        <span class="span_normal">{{ lecture.get_score }} </span>
+                        </p>
+
+                    </div>
+                </article>
+            </div>
+
+            <div class="column is-one-mobile is-half-desktop">
+                <article class=" notification detail is-white ">
+
+                    <div class="is-size-6">
+                        <!-- 긍부정비율 평점 -->
+                        <p class="title is-size-5" style="margin-bottom: 0.7rem;">리뷰 긍부정 비율</p>
+                        <p class='title is-size-5 positive_negative' style="color:#174287">긍정
+                            <progress class="progress is-large is-info" value={{ 100|mul:lecture.positive}} max="100">
+                                긍정
+                            </progress>
+                            {{ 100|mul:lecture.get_positive|floatformat:1}}%
+                        </p>
+                        <p class='title is-size-5 positive_negative' style="color:#FF470F">부정
+                            <progress class="progress is-large is-danger" value={{ 100|mul:lecture.negative}} max="100">
+                                부정
+                            </progress>
+                            {{ 100|mul:lecture.get_negative|floatformat:1}}%
+                        </p>
+                        <br>
+                        <a href='{{ lecture.link }}' style="color:orangered;  font-weight: bold;">에브리타임 리뷰 더보기</a>
+                        <br><br>
+                        <p>
+                            <span class='title is-size-6'>출석: </span> {{ lecture.attendance }}<br>
+                        </p>
+                        <p>
+                            <span class='title is-size-6'>성적 비율: </span> {{ lecture.score_stlict }}<br>
+                        </p>
+                        <p>
+                            <span class='title is-size-6'>과제 강도: </span> {{ lecture.homework }}<br>
+                        </p>
+                        <p>
+                            <span class='title is-size-6'>팀플 여부: </span> {{ lecture.teamplay }}<br>
+                        </p>
+                        <p>
+                            <span class='title is-size-6'>시험 횟수: </span> {{ lecture.test_time }}<br>
+                        </p>
+                        <p>
+                            <span class='title is-size-6'>제한여부: </span> {{ lecture.remarks }}<br>
+                        </p>
+                        <br>
+
+                    </div>
+                </article>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="title has-background-light" style="padding: 2% 3%;">해쉬태그</div>
+        <div class='columns'>
+            <!-- 해쉬태그 -->
+            <div class="column" style="text-align: center;">
+                {% for tag in lecture.get_hash_tags %}
+                    <a href="/search?keyword={{ tag }}"><span class="tag is-success is-large"
+                                                              style="margin: 2px 20px">#{{ tag }}</span></a>
+                {% endfor %}
+            </div>
+        </div>
+
+
+        <div class='columns'>
+            <div class="column">
+                <!-- 유사강의 -->
+                <div class="title has-background-light" style="padding: 2% 3%;">유사강의</div>
+                <div class="columns is-multiline ">
+                    {% include "search/includes/_lecture_card_list.html" with icon="columns" lecture=similar_lectures %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_body %}
+    <script
+            type="application/javascript">const favorite_url = new URL("http://{{request.get_host}}{% url 'add_favorite_lecture' %}");</script>
+    <script type="application/javascript" src="{% static 'js/add_favorite_lecture.js' %}"></script>
+{% endblock %}

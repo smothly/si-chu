@@ -1,0 +1,10 @@
+{% if messages %}
+    {% with default_message_tag="info" %}
+        {% for message in messages %}
+            <div class="notification is-{{ message.tags }}" style="position: fixed; z-index: 100; margin-top:4rem">
+                <button class="delete"></button>
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endwith %}
+{% endif %}

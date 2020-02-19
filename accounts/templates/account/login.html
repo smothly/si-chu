@@ -1,0 +1,40 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Sign In" %}{% endblock %}
+
+{% block no_container %}
+    <div class="hero is-centered is-fullheight-with-navbar">
+        <div class="hero-body">
+            <div class="container is-fluid">
+                <div class="columns is-centered is-one-third-desktop">
+                    <div class="card column is-one-third-desktop">
+                        <div class="card-content">
+                            <h1 class="title">로그인</h1>
+                            <p>아직 계정이 없으시다면, <a href="{{ signup_url }}">회원가입</a> 버튼을 눌러주세요.</p>
+                            <form class="login" method="POST" action="{% url 'account_login' %}">
+                                {% csrf_token %}
+                                <br>
+                                {% include 'account/includes/_form_field_errors.html' with errors=form.non_field_errors %}
+                                {% include "account/includes/_form_field.html" with field=form.login field_icon='user' errors=form.errors.login %}
+                                {% include "account/includes/_form_field.html" with field=form.password field_icon='lock' errors=form.errors.password %}
+
+                                {% if redirect_field_value %}
+                                    <input type="hidden" name="{{ redirect_field_name }}"
+                                           value="{{ redirect_field_value }}"/>
+                                {% endif %}
+                                <div class="has-text-right">
+                                    <a href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+                                </div>
+                                <br>
+                                <button class="button is-primary is-fullwidth"
+                                        type="submit">{% trans "Sign In" %}</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

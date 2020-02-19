@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block head_title %}
+    이메일 수정하기
+{% endblock %}
+
+{% block extra_head %}
+
+{% endblock %}
+
+{% block content %}
+    <div class="hero is-centered is-fullheight is-vcentered">
+        <div class="hero-body">
+            <div class="container is-fluid">
+                <div class="columns is-centered">
+                    <div class="card column is-one-third-desktop">
+                        <div class="card-content">
+                            <h1 class="title">이메일 정보 수정하기</h1>
+                            <p>기존 정보를 확인하시고 수정이 필요하시다면 아래의 메일 목록에서 선택하여 원하시는 버튼을 눌러주세요.</p>
+                            <br>
+                            <strong>기존 정보</strong>
+                            {% if user.emailaddress_set.all.0.primary %}
+                                {% with primary_email=user.emailaddress_set.all.0 %}
+                                    {% with secondary_email=user.emailaddress_set.all.1 %}
+                                        {% include "account/includes/_mypage_email_table.html" %}
+                                    {% endwith %}
+                                {% endwith %}
+                            {% else %}
+                                {% with primary_email=user.emailaddress_set.all.1 %}
+                                    {% with secondary_email=user.emailaddress_set.all.0 %}
+                                        {% include "account/includes/_mypage_email_table.html" %}
+                                    {% endwith %}
+                                {% endwith %}
+                            {% endif %}
+
+                            {% if user.emailaddress_set.all %}
+                                <strong>등록된 이메일 목록</strong>
+                                <form action="{% url 'email_action' %}" class="email_list" method="post">
+                                    {% csrf_token %}
+                                    <div class="select is-multiple is-fullwidth">
+                                        <select name="email" multiple size="3">
+                                            {% for emailaddress in user.emailaddress_set.all %}
+                                                <option id="email_radio_{{ forloop.counter }}"
+                                                        value="{{ emailaddress }}">
+                                                    {% if emailaddress.primary %}
+                                                        <span class="primary">주 </span>
+                                                    {% endif %}
+                                                    {{ emailaddress }}
+                                                    {% if emailaddress.verified %}
+                                                        인증완료
+                                                    {% else %}
+                                                        인증대기
+                                                    {% endif %}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                        <br>
+                                        <div class="buttons">
+                                            <button class="button is-primary is-small" type="submit"
+                                                    name="action_primary">주 메일로 설정하기
+                                            </button>
+                                            <button class="button is-primary is-small" type="submit"
+                                                    name="action_send">인증 메일 재발송
+                                            </button>
+                                            <button class="button is-primary is-small" type="submit"
+                                                    name="action_remove">메일 삭제하기
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            {% else %}
+                            {% endif %}
+                            <br><br>
+                            <form method="POST" action="{% url 'email_action' %}">
+                                {% csrf_token %}
+                                {% include "account/includes/_form_field.html" with field=form.email field_icon='envelope' errors=form.errors.email %}
+                                <button name="action_add" type="submit"
+                                        class="button is-primary is-small is-pulled-right">이메일 추가하기
+                                </button>
+                            </form>
+                            <br>
+                            <br>
+                            <a class="button is-fullwidth is-link" href="{% url 'account_mypage' %}">돌아가기</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_body %}
+    <script type="text/javascript">
+        (function () {
+            var message = "정말로 해당 이메일을 삭제하시겠습니까?";
+            var actions = document.getElementsByName('action_remove');
+            if (actions.length) {
+                actions[0].addEventListener("click", function (e) {
+                    if (!confirm(message)) {
+                        e.preventDefault();
+                    }
+                });
+            }
+        })();
+    </script>
+{% endblock %}

@@ -1,0 +1,9 @@
+<label class="label">{{ field.label }}</label>
+<div class="control">
+    <div class="select">
+        {{ field }}
+    </div>
+</div>
+{% for error in errors %}
+    <p class="help is-danger">{{ error|escape }}</p>
+{% endfor %}

@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load mathfilters %}
+
+{% block head_title %}
+    SiChu - {{ user.get_full_name }} 님의 마이페이지
+{% endblock %}
+
+{% block extra_head %}
+    <style>
+        .mypage_card {
+            height: 20rem;
+            padding: 1rem 2rem;
+        }
+
+        .mypage-header {
+            width: 4rem;
+        }
+
+        .mypage-end {
+            width: 6rem;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <h2 class='title has-background-light' style="padding: 2% 3%;">프로필 / 이메일</h2>
+    <div class="columns is-multiline is-centered">
+        <div class="column is-half-desktop is-12-touch">
+            <div class="card mypage_card">
+                <div class="card-content">
+                    <h1 class="title">시츄 프로필</h1>
+                    {% include "account/includes/_mypage_profile_table.html" %}
+                    <div class="is-pulled-left">
+                        <a class="button" href="{% url 'profile_update' %}">수정하기</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="column is-half-desktop is-12-touch">
+            <div class="card mypage_card">
+                <div class="card-content">
+                    <h1 class="title">이메일</h1>
+                    {% if user.emailaddress_set.all.0.primary %}
+                        {% with primary_email=user.emailaddress_set.all.0 %}
+                            {% with secondary_email=user.emailaddress_set.all.1 %}
+                                {% include "account/includes/_mypage_email_table.html" %}
+                            {% endwith %}
+                        {% endwith %}
+                    {% else %}
+                        {% with primary_email=user.emailaddress_set.all.1 %}
+                            {% with secondary_email=user.emailaddress_set.all.0 %}
+                                {% include "account/includes/_mypage_email_table.html" %}
+                            {% endwith %}
+                        {% endwith %}
+                    {% endif %}
+                    <div class="is-pulled-left">
+                        <a class="button" href="{% url 'email_update' %}">수정하기</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="lecture">
+        <div class="container">
+            <h2 class='title has-background-light' style="padding: 2% 3%;">찜한 강의들</h2>
+            <div class="columns is-multiline ">
+                {% include "search/includes/_lecture_card_list.html" with icon="columns" lecture=user.favorite_lectures.all %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_body %}
+    <script type="application/javascript">const favorite_url = new URL("http://{{request.get_host}}{% url 'add_favorite_lecture' %}");</script>
+    <script type="application/javascript" src="{% static 'js/add_favorite_lecture.js' %}"></script>
+{% endblock %}

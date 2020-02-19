@@ -1,0 +1,16 @@
+<table class="table is-fullwidth has-text-left">
+    <tbody>
+    <tr>
+        <th class="mypage-header">이름</th>
+        <td class="has-text-left mypage-content">{{user.get_full_name|default:"정보없음"}}</td>
+    </tr>
+    <tr>
+        <th class="mypage-header">전공</th>
+        <td class="has-text-left mypage-content"> {{ user.get_major }}</td>
+    </tr>
+    <tr>
+        <th class="mypage-header">학년</th>
+        <td class="has-text-left mypage-content">{{ user.grade|default:"정보없음" }}</td>
+    </tr>
+    </tbody>
+</table>

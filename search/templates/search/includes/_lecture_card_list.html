@@ -1,0 +1,59 @@
+{% load mathfilters %}
+{% for lec in lecture %}
+    <!-- 1개 카드에 lecture 1개 설명 -->
+    <div class="column is-12-touch is-half-desktop is-one-third-widescreen">
+        <!-- border 색깔 여러개로  -->
+        <article class="media notification lecture_card is-white"
+                 style="margin: 0 2%; border-color: {% cycle '#f57842' '#f5e942' '#a7f542' '#42bcf5' '#6f42f5' '#f54263' %}">
+            <figure class="media-left">
+                <span class="icon has-text-danger">
+                    <!-- <i class="fas fa-lg fa-columns has-text-warning"></i> -->
+                    {% autoescape off %}{{ lec.icon.tag }}{% endautoescape %}
+                </span>
+            </figure>
+            <div class="media-content">
+                <div class="content">
+                    <h1 class="title is-size-4">
+                        <a href={% url 'lecture' lecture_id=lec.id %}>
+                            {{ lec.name }}<br>
+                            <span class="is-size-5">({{ lec.prof_name }})</span>
+                        </a>
+                    </h1>
+                    <div class="is-size-6">
+                        <p class="title is-size-6">학부 / 학년<br>
+                            <span class="span_normal">{{ lec.get_category }}
+                                / {{ lec.recommend_year }}</span>
+                        </p>
+                        <p class="title is-size-6">해쉬태그<br>
+                            {% for tag in lec.get_hash_tags %}
+                                <a href="/search?keyword={{ tag }}"><span
+                                        class='tag is-info is-light'>#{{ tag }}</span></a>
+                            {% endfor %}<br>
+                        </p>
+                        <p class="title is-size-6" style="margin-bottom: 2px;">평점<br>
+                            {% for star in lec.get_star.full_star %}
+                                <div class="star" style="max-width: {{ 25 }}px;"><i
+                                        class="fas fa-lg fa-star has-text-warning"></i></div>
+                            {% endfor %}
+                        <div class="star" style="max-width: {{ 25|mul:lec.get_star.half_star }}px;"><i
+                                class="fas fa-lg fa-star has-text-warning"></i></div>
+                        <span class="span_normal">{{ lec.get_score }} </span>
+
+                        </p>
+
+                        {% if '2020-1' in lec.semester %}
+                        <button class="button has-text-danger is-pulled-right favorite-button"
+                            id="favorite-{{ lec.id }}"
+                            name="{{ lec.id }}"
+                            style="position: absolute; float:right; right: 10%; bottom: 5%;">
+                            {% if lec.id in user.favorite_lecture_pk %}<i class="fas fa-heart"></i>
+                            {% else %} <i class="far fa-heart is-large"></i>
+                            {% endif %}
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+{% endfor %}

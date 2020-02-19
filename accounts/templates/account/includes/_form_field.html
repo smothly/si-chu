@@ -1,0 +1,12 @@
+<div class="field">
+    <label class="label">{{ field.label }}</label>
+    <div class="control {% if field_icon %}has-icons-left{% endif %}">
+        {{ field }}
+        {% if field_icon %}
+            <span class="icon is-small is-left">
+                <i class="fas fa-{{ field_icon }}"></i>
+            </span>
+        {% endif %}
+    </div>
+    {% include "account/includes/_form_field_errors.html" %}
+</div>

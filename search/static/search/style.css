@@ -1,0 +1,95 @@
+body,
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+@media screen and (max-width: 1023px) {
+    .main-header .left {
+        padding: 0 1rem;
+    }
+
+    .main-header .right {
+        padding: 0 1rem;
+    }
+}
+
+.detail_wrapper article {
+    margin: 0 1rem;
+}
+
+.detail {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #3298dc;
+    border-radius: 10px;
+    height: 27rem;
+    vertical-align: middle;
+}
+
+.detail_prof {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #3298dc;
+    border-radius: 10px;
+    height: 220px;
+    vertical-align: middle;
+}
+
+.span_normal {
+    font-weight: normal !important;
+}
+
+.star {
+    position: relative !important;
+    display: inline-block !important;
+    overflow: hidden !important;
+}
+
+.fa-star {
+    max-width: initial !important;
+}
+
+.lecture_card {
+    height: 320px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #3298dc;
+}
+
+.prof_card {
+    height: 260px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #3298dc;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+.progress {
+    display: inline-block !important;
+    margin-bottom: 0rem !important;
+    width: 75% !important;
+}
+
+.positive_negative {
+    margin-bottom: 10px !important;
+    margin-inline-start: 0px !important;
+    margin-inline-end: 0px !important;
+}
+
+.bgimg {
+    border: 0;
+    padding: 0;
+    background-image: url("./bg.jpg");
+    min-height: 100%;
+    background-position: center;
+    background-size: cover;
+}
+
+.favorite-button svg {
+    pointer-events: none;
+}

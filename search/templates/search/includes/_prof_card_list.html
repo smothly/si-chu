@@ -1,0 +1,47 @@
+{% load mathfilters %}
+{% for p in prof %}
+    <!-- 1개 카드에 prof 1개 설명 -->
+    <div class="column is-12-touch is-half-desktop is-one-third-widescreen">
+        <!-- border 색깔 여러개로  -->
+        <article class="media notification prof_card is-white"
+                 style="margin: 0 2%; border-color: {% cycle '#f57842' '#f5e942' '#a7f542' '#42bcf5' '#6f42f5' '#f54263' %}">
+            <figure class="media-left">
+                <span class="icon has-text-danger">
+                    <!-- <i class="fas fa-lg fa-columns has-text-warning"></i> -->
+                    {% autoescape off %}{{ p.icon.tag }}{% endautoescape %}
+                </span>
+            </figure>
+            <div class="media-content">
+                <div class="content">
+                    <h1 class="title is-size-4">
+                        <a href={% url 'prof' prof_id=p.id %}>
+                            {{ p.name }}
+                        </a>
+                    </h1>
+                    <div class="is-size-6">
+                        <p class="title is-size-6">소속학부<br>
+                            <span class='span_normal'>{{ p.category }}</span>
+                        </p>
+                        <p class="title is-size-6">해쉬태그<br>
+                            {% for tag in p.get_hash_tags %}
+                                <a href="/search?keyword={{ tag }}"><span
+                                        class='tag is-info is-light'>#{{ tag }}</span></a>
+                            {% endfor %}<br>
+                        </p>
+                        <p class="title is-size-6" style="margin-bottom: 2px;">평점<br>
+                            {% for star in p.get_star.full_star %}
+                                <div class="star" style="max-width: {{ 25 }}px;">
+                                    <i class="fas fa-lg fa-star has-text-warning"></i>
+                                </div>
+                            {% endfor %}
+                        <div class="star" style="max-width: {{ 25|mul:p.get_star.half_star }}px;">
+                            <i class="fas fa-lg fa-star has-text-warning"></i>
+                        </div>
+                        <span class="span_normal">{{ p.get_score }} </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+{% endfor %}

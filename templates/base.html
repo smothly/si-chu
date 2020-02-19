@@ -1,0 +1,160 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-157941812-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', 'UA-157941812-1');
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static 'search/style.css' %}">
+    <!-- Bulma CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <title>{% block head_title %}{% endblock %}</title>
+
+    <style>
+        /* 폰트 */
+        @font-face {
+            font-family: 'GmarketSansBold';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'GmarketSansMedium';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Handon3gyeopsal300g';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_seven@1.2/Handon3gyeopsal300g.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            font-family: 'Handon3gyeopsal300g';
+        }
+
+        .title.main-header {
+            font-size: 5rem;
+        }
+
+        .hero.is-fullheight.is-vcentered {
+            min-height: 70vh;
+        }
+    </style>
+
+    {% block extra_head %}
+    {% endblock %}
+
+</head>
+<body>
+{% block body %}
+    <!-- message -->
+    <div id="messages">
+        {% include "includes/message.html" %}
+    </div>
+    <!-- 내비바 -->
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="/">
+                <h1 class="title">시츄</h1>
+            </a>
+
+            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+               data-target="navbarBasicExample">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+
+        <div id="navbarBasicExample" class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item" href="https://www.notion.so/9887e137055945e094aea04e4bce3d90">
+                    <strong>소개</strong>
+                </a>
+            </div>
+
+            <div class="navbar-end">
+                {% if search_bar != False %}
+                    <div class="navbar-item">
+                        <form action="{% url 'search' %}" method="get">
+                            <div class="field has-addons">
+                                <div class="control is-expanded">
+                                    <input class="input is-rounded" type="text" name="keyword" required
+                                           value="{{ keywords|default:"" }}"
+                                           placeholder="키워드를 검색해주세요. ex) 화  A, 빅데이터, 웹, 과제, 교수님성함 등등">
+                                </div>
+                                <div class="control">
+                                    <button class="button is-link is-rounded">
+                                        {#Search#}
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                {% endif %}
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <a class="button is-warning" style="color:3B1E1E"
+                           href="https://open.kakao.com/o/sjHgyvWb"><strong>문의하기</strong></a>
+                        {% if user.is_authenticated %}
+                            <a class="button is-info" href="{% url "account_mypage" %}"><strong>My Page</strong></a>
+                            <form method="POST" action="{% url "account_logout" %}">
+                                {% csrf_token %}
+                                <button type="submit" class="button is-primary">Log out</button>
+                            </form>
+                        {% else %}
+                            <a class="button is-primary" href="{% url "account_signup" %}">
+                                <strong>Sign up</strong>
+                            </a>
+                            <a class="button is-light" href="{% url "account_login" %}">
+                                Log in
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+    {% block no_container %}
+    {% endblock %}
+
+    <footer class="footer">
+        <div class="content has-text-centered">
+            리뷰기반 강의/교수 추천 서비스 <strong>시츄</strong> made by
+
+            <a href="https://www.facebook.com/pg/LikeLionKookmin/posts/">
+                국민대 멋사
+            </a>X
+            <a href="https://www.facebook.com/kookmin.bigdata.dna2013/">
+                D&A
+            </a>
+        </div>
+    </footer>
+{% endblock %}
+
+{# extra javascript #}
+{% block extra_body %}
+{% endblock %}
+<script type="application/javascript" src="{% static 'js/notification_delete.js' %}"></script>
+<script type="application/javascript" src="{% static 'js/navbar_burger.js' %}"></script>
+</body>
+</html>

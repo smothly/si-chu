@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load mathfilters %}
+
+{% block head_title %}
+    SiChu - 검색 결과
+{% endblock %}
+
+{% block content %}
+    <div class="columns is-centered is-multiline">
+        <section class='column is-12' id="lecture">
+            <div class="container">
+                <h2 class='title has-background-light' style="padding: 2% 3%;">강의</h2>
+                <div class="columns is-multiline ">
+                    {% include "search/includes/_lecture_card_list.html" with lecture=lecture|slice:"0:6" %}
+                </div>
+            </div>
+        </section>
+        <section class='column is-12' id="lecture-more" style="display:none;">
+            <div class="container">
+                <div class="columns is-multiline ">
+                    {% include "search/includes/_lecture_card_list.html" with lecture=lecture|slice:"6:" %}
+                </div>
+            </div>
+        </section>
+
+        {% if lecture|length > 6 %}
+            <div class="column is-half is-centered">
+                <button type="button" class="button is-fullwidth more-btn" name="lecture-more">{{ lecture|length|sub:6 }}개 더보기</button>
+            </div>
+        {% endif %}
+    </div>
+    <br><br><br>
+
+    <div class="columns is-centered is-multiline">
+        <section class='column is-12' id='prof'>
+            <div class="container">
+                <h2 class='title has-background-light' style="padding: 2% 3%;">교수</h2>
+                <div class="columns is-multiline ">
+                    {% include "search/includes/_prof_card_list.html" with prof=prof|slice:"0:6" %}
+                </div>
+            </div>
+        </section>
+        <section class='column is-12' id='prof-more' style="display:none;">
+            <div class="container">
+                <div class="columns is-multiline ">
+                    {% include "search/includes/_prof_card_list.html" with prof=prof|slice:"6:" %}
+                </div>
+            </div>
+        </section>
+        {% if prof|length > 6 %}
+            <div class="column is-half is-centered">
+                <button type="button" class="button is-fullwidth more-btn" name="prof-more">{{ prof|length|sub:6 }}개 더보기</button>
+            </div>
+        {% endif %}
+    </div>
+    <br>
+{% endblock %}
+
+{% block extra_body %}
+    <script type="application/javascript" src="{% static 'js/more_list.js' %}"></script>
+    <script type="application/javascript">
+        const favorite_url = new URL("http://{{request.get_host}}{% url 'add_favorite_lecture' %}");
+    </script>
+    <script type="application/javascript" src="{% static 'js/add_favorite_lecture.js' %}"></script>
+{% endblock %}

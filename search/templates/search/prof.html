@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head_title %}
+    SiChu - 교수 정보
+{% endblock %}
+
+{% block content %}
+    {% load mathfilters %}
+    <div class="title has-background-light" style="padding: 2% 3%;">교수 정보</div>
+    <div class='columns is-multiline detail_wrapper'>
+        <div class="column is-half-touch is-one-quarter-desktop">
+            <article class="notification detail_prof is-white ">
+
+                <!-- 아이콘 강의 교수 학부 시간 개설학기 -->
+                <h1 class="title is-size-4">
+                    <span class="icon has-text-info">
+                        {% autoescape off %}{{ prof.icon.tag }}{% endautoescape %}
+                    </span> {{ prof.name }}<br>
+                </h1>
+                <div class='is-size-6'>
+                    <p>
+                        <span class='title is-size-6'>소속학부: </span> {{ prof.get_category }}<br>
+                    </p><br>
+                    <p>
+                        <span class='title is-size-6'>평점</span>
+                    </p>
+                    {% for star in prof.get_star.full_star %}
+                        <div class="star" style="max-width: {{ 25 }}px;">
+                            <i class="fas fa-lg fa-star has-text-warning"></i>
+                        </div>
+                    {% endfor %}
+                    <div class="star" style="max-width: {{ 25|mul:prof.get_star.half_star }}px;"><i
+                            class="fas fa-lg fa-star has-text-warning"></i></div>
+                    <span class="span_normal">{{ prof.get_score }} </span>
+                </div>
+            </article>
+        </div>
+
+        <div class="column is-half-touch is-one-quarter-desktop">
+            <article class="notification detail_prof is-white ">
+                <br>
+                <p>
+                    <span class='title is-size-6'>출석: </span> {{ prof.attendance }}<br>
+                </p>
+                <p>
+                    <span class='title is-size-6'>성적 비율: </span> {{ prof.score_stlict }}<br>
+                </p>
+                <p>
+                    <span class='title is-size-6'>과제 강도: </span> {{ prof.homework }}<br>
+                </p>
+                <p>
+                    <span class='title is-size-6'>팀플 여부: </span> {{ prof.teamplay }}<br>
+                </p>
+                <p>
+                    <span class='title is-size-6'>시험 횟수: </span> {{ prof.test_time }}<br>
+                </p>
+                <br>
+            </article>
+        </div>
+        <div class="column is-12-touch is-half-desktop">
+            <article class="detail_prof notification is-white">
+                <div class="is-size-6">
+                    <!-- 긍부정비율 평점 -->
+                    <p class="title is-size-5">리뷰 긍부정 비율</p>
+                    <p class='title is-size-5 positive_negative' style="color:#174287">긍정
+                        <progress class="progress is-large is-info" value={{ 100|mul:prof.get_positive}} max="100">
+                            긍정
+                        </progress>
+                        {{ 100|mul:prof.get_positive|floatformat:1}}%
+                    </p>
+                    <p class='title is-size-5 positive_negative' style="color:#FF470F">부정
+                        <progress class="progress is-large is-danger"
+                                  value={{ 100|mul:prof.get_negative}} max="100">부정
+                        </progress>
+                        {{ 100|mul:prof.get_negative|floatformat:1}}%
+                    </p>
+                    <br>
+                    <a href='{{ prof.link }}' style="color:orangered;  font-weight: bold;">에브리타임 리뷰 더보기</a>
+                    <br><br>
+                </div>
+            </article>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="title has-background-light" style="padding: 2% 3%;">해쉬태그</div>
+    <div class='columns'>
+        <!-- 해쉬태그 -->
+        <div class="column" style="text-align: center;">
+            {% for tag in prof.get_hash_tags %}
+                <a href="/search?keyword={{ tag }}"><span class="tag is-success is-large"
+                                                          style="margin: 2px 20px">#{{ tag }}</span></a>
+            {% endfor %}
+        </div>
+    </div>
+
+
+    <div class='columns'>
+        <div class="column">
+            <!-- 이번학기 열린 강의 -->
+            <div class="title has-background-light" style="padding: 2% 3%;">이번학기 열린 강의</div>
+            <div class="columns is-multiline ">
+                {% include "search/includes/_lecture_card_list.html" with icon="columns" lecture=lecture_list %}
+            </div>
+        </div>
+    </div>
+    <div class='columns'>
+        <div class="column">
+            <!-- 유사교수 -->
+            <div class="title has-background-light" style="padding: 2% 3%;">유사교수</div>
+            <div class="columns is-multiline ">
+                {% include "search/includes/_prof_card_list.html" with icon="columns" prof=similar_profs %}
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+
+{% endblock %}
+
+
+{% block extra_body %}
+    <script
+            type="application/javascript">const favorite_url = new URL("http://{{request.get_host}}{% url 'add_favorite_lecture' %}");</script>
+    <script type="application/javascript" src="{% static 'js/add_favorite_lecture.js' %}"></script>
+{% endblock %}

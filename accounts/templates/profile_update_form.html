@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block head_title %}
+    프로필 수정하기
+{% endblock %}
+
+{% block extra_head %}
+
+{% endblock %}
+
+{% block no_container %}
+    <div class="hero is-centered is-fullheight is-vcentered">
+        <div class="hero-body">
+            <div class="container is-fluid">
+                <div class="columns is-centered">
+                    <div class="card column is-one-third-desktop">
+                        <div class="card-content">
+                            <h1 class="title">프로필 수정하기</h1>
+                            <p>기존 정보에서 수정을 원하신다면 아래의 폼을 채워 주신뒤 저장을 눌러주세요.</p>
+                            <br>
+                            <strong>기존 정보</strong>
+                            {% include "account/includes/_mypage_profile_table.html" %}
+                            <form method="POST" action="{% url 'profile_update' %}">
+                                {% csrf_token %}
+                                <div class="columns">
+                                    <div class="column">
+                                        {% include "account/includes/_form_field.html" with field=form.last_name errors=form.errors.last_name %}
+                                    </div>
+                                    <div class="column">
+                                        {% include "account/includes/_form_field.html" with field=form.first_name errors=form.errors.first_name %}
+                                    </div>
+                                </div>
+                                {% include "account/includes/_form_select_field.html" with field=form.major errors=form.errors.major %}
+                                {% include "account/includes/_form_select_field.html" with field=form.grade errors=form.errors.grade %}
+
+                                <br>
+                                <button class="button is-primary is-fullwidth" type="submit">저장</button>
+                            </form>
+                            <br>
+                            <a class="button is-fullwidth is-link" href="{% url 'account_mypage' %}">돌아가기</a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

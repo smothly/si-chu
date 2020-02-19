@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head_title %}
+    SiChu - 강의/교수 추천 서비스
+{% endblock %}
+
+
+{% block content %}
+    <section class="is-vcentered hero is-fullheight">
+        <div class="hero-body">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-fullwidth has-text-centered is-centered">
+                        <div class="columns title main-header has-text-center-touch is-multiline">
+                            <div class="column is-12-mobile has-text-right-tablet left">시간표</div>
+                            <div class="column is-12-mobile has-text-left-tablet right">츄천</div>
+                        </div>
+                        <h2 class="subtitle">강의에 대한 더 자세한 정보</h2>
+                    </div>
+                </div>
+                <div class="columns is-centered">
+                    <div class="column is-9-desktop is-12-mobile">
+                        <form action="{% url 'search' %}" method="get">
+                            <div class="field has-addons">
+                                <div class="control is-expanded">
+                                    <input class="input is-medium is-rounded" type="text" name="keyword" required
+                                           placeholder="키워드를 검색해주세요. ex) 화 A, 빅데이터, 웹, 과제, 교수님성함 등등">
+                                </div>
+                                <div class="control">
+                                    <button class="button is-link is-medium is-rounded">
+                                        {#Search#}
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

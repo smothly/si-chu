@@ -1,0 +1,30 @@
+<table class="table is-fullwidth has-text-left">
+    <tbody>
+    <tr>
+        <th class="mypage-header">주</th>
+        <td class="has-text-left mypage-content">
+            {{ primary_email|default:"주 이메일을 설정하지 않으셨습니다." }}
+        </td>
+        <td class="has-text-left mypage-end">
+            {% if primary_email.verified %}
+                <span class="verified">인증완료</span>
+            {% else %}
+                <span class="unverified">인증대기</span>
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <th class="mypage-header">보조</th>
+        <td class="has-text-left mypage-content">
+            {{ secondary_email|default:"보조 이메일을 설정하지 않으셨습니다." }}
+        </td>
+        <td class="has-text-left mypage-end">
+            {% if secondary_email.verified %}
+                <span class="verified">인증완료</span>
+            {% else %}
+                <span class="unverified">인증대기</span>
+            {% endif %}
+        </td>
+    </tr>
+    </tbody>
+</table>

@@ -1,0 +1,16 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+{% load account %}
+
+{% block head_title %}{% trans "공국민 이메일 인증" %}{% endblock %}
+
+{% block content %}
+    <div class="card" style="margin-top:10rem; width:40rem; margin-left:auto; margin-right: auto;">
+        <div class="card-content">
+            <h1 class="title">{% trans "이메일 인증 완료" %}</h1>
+            <p>이메일 인증이 완료 되었습니다.<br>
+                SiChu 서비스를 즐겨주세요!</p>
+        </div>
+    </div>
+{% endblock %}
